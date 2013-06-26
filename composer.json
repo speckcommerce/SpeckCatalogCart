@@ -1,0 +1,35 @@
+{
+    "name": "speckcommerce/speck-catalog-cart",
+    "description": "'glue' module for cart and catalog",
+    "type": "library",
+    "minimum-stability": "dev",
+    "keywords": [
+        "zf2",
+        "speckcommerce"
+    ],
+    "homepage": "http://github.com/speckcommerce/SpeckCatalogCart",
+    "authors": [
+        {
+            "name": "Nigel Lundsten",
+            "email": "nigel.lundsten@gmail.com",
+            "homepage": ""
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
+        "speckcommerce/speck-contact": "dev-master",
+        "speckcommerce/speck-cart": "dev-master",
+        "speckcommerce/speck-catalog": "dev-master",
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-0": {
+            "SpeckCatalogCart": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
