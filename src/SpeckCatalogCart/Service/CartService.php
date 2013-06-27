@@ -146,14 +146,14 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
             'image'              => $item->has('image') ? $item->getImage() : null,
             'parent_option_id'   => null,
             'parent_option_name' => null,
+            'product_id'         => $item->getProductId()
         );
         if ($item instanceOf Product && $parentOption) {
-            $meta['parent_option_id']   = $parentOption->getOptionId();
-            $meta['parent_option_name'] = $parentOption->__toString();
+                $meta['parent_option_id']   = $parentOption->getOptionId();
+                $meta['parent_option_name'] = $parentOption->__toString();
         }
         if ($item instanceOf Choice) {
             $meta['flat_options'] = $this->flatOptions;
-            $meta['product_id']   = $item->getProductId();
         }
         $cartProductMeta = new CartProductMeta($meta);
         $cartItem = new CartItem(array(
@@ -173,8 +173,8 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
         $exp = explode(':', $uomString);
         $data = array(
             'product_id' => (int) $exp[0],
-            'uom_code' => $exp[1],
-            'quantity' => (int) $exp[2],
+            'uom_code'   => $exp[1],
+            'quantity'   => (int) $exp[2],
         );
         $uom = $this->getProductUomService()->find($data);
 
