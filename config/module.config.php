@@ -12,6 +12,20 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'product' => array(
+                'child_routes' => array(
+                    'cartProduct' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/:id/:cartItemId',
+                            'constraints' => array(
+                                'id'         => '[0-9]+',
+                                'cartItemId' => '[0-9]+',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
             'cart' => array(
                 'type' => 'Literal',
                 'priority' => 1000,

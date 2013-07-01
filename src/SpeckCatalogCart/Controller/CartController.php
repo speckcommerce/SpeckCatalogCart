@@ -12,26 +12,20 @@ class CartController extends AbstractActionController
     protected $choiceService;
     protected $flatOptions = array();
 
+    public function editItemAction()
+    {
+        $id   = $this->getParams('id');
+        $item = $this->getCartService()->findItemById($id, true);
+        $meta = $item->getMetadata();
+
+        $resp = $this->getEventManager()->trigger(array('meta' => $meta));
+    }
+
     public function indexAction()
     {
         return new ViewModel(array(
             'cart' => $this->getCartService()->getSessionCart(),
         ));
-    }
-
-    public function getCartService()
-    {
-        if (!isset($this->cartService)) {
-            $this->cartService = $this->getServiceLocator()->get('catalog_cart_service');
-        }
-
-        return $this->cartService;
-    }
-
-    public function setCartService($service)
-    {
-        $this->cartService = $service;
-        return $this;
     }
 
     public function addItemAction()
@@ -66,5 +60,18 @@ class CartController extends AbstractActionController
         return $this->_redirect()->toUrl('/cart');
     }
 
-}
+    public function getCartService()
+    {
+        if (!isset($this->cartService)) {
+            $this->cartService = $this->getServiceLocator()->get('catalog_cart_service');
+        }
 
+        return $this->cartService;
+    }
+
+    public function setCartService($service)
+    {
+        $this->cartService = $service;
+        return $this;
+    }
+}

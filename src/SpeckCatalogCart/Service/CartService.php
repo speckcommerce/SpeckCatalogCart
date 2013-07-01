@@ -46,7 +46,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
         return $this->getCartService()->removeItemFromCart($cartItemId);
     }
 
-    protected function findItemById($cartItemId, $childItems = false)
+    public function findItemById($cartItemId, $childItems = false)
     {
         if (!$childItems) {
             return $this->getCartService()->findItemById($cartItemId);
@@ -103,7 +103,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
         return $parentCartItem;
     }
 
-    protected function replaceCartItemsChildren($cartItemId, $flatOptions = array(), $uomString, $quantity)
+    public function replaceCartItemsChildren($cartItemId, $flatOptions = array(), $uomString, $quantity)
     {
         $this->flatOptions = $flatOptions;
 
