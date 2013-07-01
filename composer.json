@@ -20,7 +20,7 @@
         "zendframework/zendframework": "2.*",
         "speckcommerce/speck-contact": "dev-master",
         "speckcommerce/speck-cart": "dev-master",
-        "speckcommerce/speck-catalog": "dev-master",
+        "speckcommerce/speck-catalog": "dev-master"
     },
     "require-dev": {
     },
