@@ -26,7 +26,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
     {
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('cartItem' => $cartItem));
         //trigger event (tax?)
-        return $this->getCartService()->addItemToCart($cartItem);
+        return $this->getCartService()->persistItem($cartItem);
     }
 
     public function addItemToCart($cartItem)
