@@ -17,6 +17,15 @@ class Module
         );
     }
 
+    public function getViewHelperConfig()
+    {
+        return array(
+            'invokables' => array(
+                'speckCatalogCart' => 'SpeckCatalogCart\View\Helper\Cart',
+            ),
+        );
+    }
+
     public function getConfig()
     {
         $config = array();
