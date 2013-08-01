@@ -148,10 +148,16 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
             'parent_option_name' => null,
             'product_id'         => $item->getProductId()
         );
+
         if ($item instanceOf Product && $parentOption) {
-                $meta['parent_option_id']   = $parentOption->getOptionId();
-                $meta['parent_option_name'] = $parentOption->__toString();
+            $meta['parent_option_id']   = $parentOption->getOptionId();
+            $meta['parent_option_name'] = $parentOption->__toString();
         }
+
+        if ($item instanceOf Product) {
+            $meta['product_type_id'] = $item->getProductTypeId();
+        }
+
         if ($item instanceOf Choice) {
             $meta['flat_options'] = $this->flatOptions;
         }

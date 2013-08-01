@@ -11,6 +11,7 @@ class CartProductMeta
     protected $flatOptions = array();
     protected $image;
     protected $uom;
+    protected $productTypeId;
 
     public function __construct(array $config = array())
     {
@@ -22,6 +23,7 @@ class CartProductMeta
            $this->flatOptions      = isset($config['flat_options'])       ? $config['flat_options']       : array();
            $this->image            = isset($config['image'])              ? $config['image']              : null;
            $this->uom              = isset($config['uom'])                ? $config['uom']                : null;
+            $this->productTypeId   = isset($config['product_type_id'])    ? $config['product_type_id']    : null;
         }
     }
 
@@ -99,6 +101,17 @@ class CartProductMeta
     public function setUom($uom)
     {
         $this->uom = $uom;
+        return $this;
+    }
+
+    public function getProductTypeId()
+    {
+        return $this->productTypeId;
+    }
+
+    public function setProductTypeId($productTypeId)
+    {
+        $this->productTypeId = $productTypeId;
         return $this;
     }
 }
