@@ -46,13 +46,6 @@ class CartController extends AbstractActionController
         return $this->redirect()->toUrl('/cart');
     }
 
-    public function updateQuantitiesAction()
-    {
-        // @todo use Request
-        $this->getCartService()->updateQuantities($_POST['quantities']);
-        return $this->_redirect()->toUrl('/cart');
-    }
-
     public function removeItemAction()
     {
         $cartService = $this->getCartService();
