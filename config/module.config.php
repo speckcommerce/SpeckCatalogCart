@@ -44,16 +44,6 @@ return array(
                             ),
                         ),
                     ),
-                    'update-quantities' => array(
-                        'type'    => 'Literal',
-                        'options' => array(
-                            'route'    => '/update-quantities',
-                            'defaults' => array(
-                                'controller' => 'catalog_cart_controller',
-                                'action' => 'updateQuantities',
-                            ),
-                        ),
-                    ),
                     'remove-item' => array(
                         'type'    => 'Segment',
                         'options' => array(

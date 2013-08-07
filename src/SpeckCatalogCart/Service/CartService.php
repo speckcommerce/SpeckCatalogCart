@@ -73,7 +73,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
         $this->addItemToCart($cartItem);
     }
 
-    protected function addOptions($options = array(), $parentCartItem)
+    protected function addOptions($options = array(), $parentCartItem, $quantity = 1)
     {
         if (!count($options)) {
             return $parentCartItem;
@@ -85,14 +85,14 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
                 if(is_array($opt)){ // multiple choices allowed(checkboxes or multi-select)
                     foreach($option->getChoices() as $choice){
                         if(array_key_exists($choice->getChoiceId(), $opt)){
-                            $childItem = $this->createCartItem($choice, $option);
+                            $childItem = $this->createCartItem($choice, $option, null, $quantity);
                             $parentCartItem->addItem($childItem);
                         }
                     }
                 } else { // $opt is the choiceId
                     foreach($option->getChoices() as $choice){
                         if($opt == $choice->getChoiceId()){
-                            $childItem = $this->createCartItem($choice, $option);
+                            $childItem = $this->createCartItem($choice, $option, null, $quantity);
                             $parentCartItem->addItem($childItem);
                         }
                     }
@@ -169,7 +169,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
             'price'       => $parentOption ? $item->getAddPrice() : $this->getPriceForUom($uomString),
         ));
 
-        $this->addOptions($item->getOptions(), $cartItem);
+        $this->addOptions($item->getOptions(), $cartItem, $quantity);
 
         return $cartItem;
     }
@@ -188,19 +188,6 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
             throw new \Exception('couldnt get that uom');
         }
         return $uom->getPrice();
-    }
-
-    public function updateQuantities($itemIdToQuantityArray)
-    {
-        foreach($itemIdToQuantityArray as $cartItemId => $qty)
-        {
-            if($qty == 0) {
-                $this->removeItemFromCart($cartItemId);
-            } else {
-                $item = $this->findItemById($cartItemId);
-                $this->persistItem($item->setQuantity($qty));
-            }
-        }
     }
 
     public function getProductService()
