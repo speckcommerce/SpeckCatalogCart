@@ -71,6 +71,8 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
         $cartItem = $this->createCartItem($product, null, $uomString, $quantity);
 
         $this->addItemToCart($cartItem);
+
+        return $cartItem;
     }
 
     protected function addOptions($options = array(), $parentCartItem)
