@@ -43,7 +43,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
 
     public function removeItemFromCart($cartItemId)
     {
-        return $this->getCartService()->removeItemFromCart($cartItemId);
+        return $this->getCartService()->removeItemFromCart($cartItemId, null, true);
     }
 
     public function findItemById($cartItemId, $childItems = false)
