@@ -146,7 +146,8 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
             'image'              => $item->has('image') ? $item->getImage() : null,
             'parent_option_id'   => null,
             'parent_option_name' => null,
-            'product_id'         => $item->getProductId()
+            'product_id'         => $item->getProductId(),
+            'flat_options'       => $this->flatOptions,
         );
 
         if ($item instanceOf Product && $parentOption) {
@@ -158,9 +159,6 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
             $meta['product_type_id'] = $item->getProductTypeId();
         }
 
-        if ($item instanceOf Choice) {
-            $meta['flat_options'] = $this->flatOptions;
-        }
         $cartProductMeta = new CartProductMeta($meta);
         $cartItem = new CartItem(array(
             'metadata'    => $cartProductMeta,
