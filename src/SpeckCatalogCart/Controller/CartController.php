@@ -36,21 +36,21 @@ class CartController extends AbstractActionController
         $uom           = (isset($_POST['uom'])            ? $_POST['uom']            : $productId . ':EA:1');
         $quantity      = (isset($_POST['quantity'])       ? $_POST['quantity']       : 1                   );
         $this->getCartService()->addCartItem($productId, $productBranch, $uom, $quantity);
-        return $this->_redirect()->toUrl('/cart');
+        return $this->_redirect()->toRoute('cart');
     }
 
     public function updateProductAction()
     {
         // @todo use Request
         $this->getCartService()->replaceCartItemsChildren($_POST['cart_item_id'], $_POST['product_branch'], $_POST['uom'], $_POST['quantity']);
-        return $this->redirect()->toUrl('/cart');
+        return $this->redirect()->toRoute('cart');
     }
 
     public function removeItemAction()
     {
         $cartService = $this->getCartService();
         $cartService->removeItemFromCart($this->params('id'));
-        return $this->_redirect()->toUrl('/cart');
+        return $this->_redirect()->toRoute('cart');
     }
 
     public function getCartService()
