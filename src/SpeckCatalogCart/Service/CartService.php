@@ -11,6 +11,7 @@ use SpeckCatalogCart\Model\CartProductMeta;
 use SpeckCatalog\Model\Option;
 use SpeckCatalog\Model\Product;
 use SpeckCatalog\Model\Choice;
+use SpeckCart\Service\CartEvent;
 
 class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInterface
 {
@@ -33,7 +34,12 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
     {
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('cartItem' => $cartItem));
         //trigger event (tax?)
-        return $this->getCartService()->addItemToCart($cartItem);
+
+        $result = $this->getCartService()->addItemToCart($cartItem);
+
+        // Trigger a post add event
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('cartItem' => $cartItem));
+        return $result;
     }
 
     public function getSessionCart()
