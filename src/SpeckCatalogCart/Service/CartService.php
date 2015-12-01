@@ -67,9 +67,25 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
     public function addCartItem($productId, $flatOptions = array(), $uomString, $quantity)
     {
         $this->flatOptions = $flatOptions;
+
+        // Check if there is already an item in the basket that is identical
+        /* @var $item \SpeckCart\Entity\CartItem */
+        foreach($this->getSessionCart()->getItems() as $item) {
+            /* @var $options \SpeckCatalogCart\Model\CartProductMeta */
+            $options = $item->getMetadata();
+
+            // If the flat options match and the product ID's are identical we can increment the quantity of this item
+            if($flatOptions == $options->getFlatOptions() && $options->getProductId() == $productId) {
+                // Add the requested quantity to the current quantity
+                $item->setQuantity($item->getQuantity()+$quantity);
+                $this->getCartService()->updateQuantities(array($item->getCartItemId() => $item->getQuantity()));
+                return $item;
+            }
+        }
+
+        // If we reach here there are no matching items in the cart so create a new item and save it.
         $product = $this->getProductService()->getFullProduct($productId, true);
         $cartItem = $this->createCartItem($product, null, $uomString, $quantity);
-
         $this->addItemToCart($cartItem);
 
         return $cartItem;
@@ -132,11 +148,11 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
         }
 
         $cartItem->setQuantity($quantity);
-        $cartItem->getMetaData()->setUom($uomString);
+        $cartItem->getMetadata()->setUom($uomString);
         $cartItem->setPrice($this->getPriceForUom($uomString));
 
         //update and persist parent
-        $cartItem->getMetaData()->setFlatOptions($this->flatOptions);
+        $cartItem->getMetadata()->setFlatOptions($this->flatOptions);
         $this->persistItem($cartItem);
     }
 
@@ -203,6 +219,9 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
         $this->productService = $productService;
     }
 
+    /**
+     * @return \SpeckCart\Service\CartService
+     */
     function getCartService()
     {
         if (null === $this->cartService) {
