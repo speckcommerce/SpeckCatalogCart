@@ -12,18 +12,20 @@ class CartProductMeta
     protected $image;
     protected $uom;
     protected $productTypeId;
+    protected $productManufacturer;
 
     public function __construct(array $config = array())
     {
         if (count($config)) {
-           $this->parentOptionId   = isset($config['parent_option_id'])   ? $config['parent_option_id']   : null;
-           $this->productId        = isset($config['product_id'])         ? $config['product_id']         : null;
-           $this->itemNumber       = isset($config['item_number'])        ? $config['item_number']        : null;
-           $this->parentOptionName = isset($config['parent_option_name']) ? $config['parent_option_name'] : null;
-           $this->flatOptions      = isset($config['flat_options'])       ? $config['flat_options']       : array();
-           $this->image            = isset($config['image'])              ? $config['image']              : null;
-           $this->uom              = isset($config['uom'])                ? $config['uom']                : null;
-            $this->productTypeId   = isset($config['product_type_id'])    ? $config['product_type_id']    : null;
+            $this->parentOptionId      = isset($config['parent_option_id'])     ? $config['parent_option_id']     : null;
+            $this->productId           = isset($config['product_id'])           ? $config['product_id']           : null;
+            $this->itemNumber          = isset($config['item_number'])          ? $config['item_number']          : null;
+            $this->parentOptionName    = isset($config['parent_option_name'])   ? $config['parent_option_name']   : null;
+            $this->flatOptions         = isset($config['flat_options'])         ? $config['flat_options']         : [];
+            $this->image               = isset($config['image'])                ? $config['image']                : null;
+            $this->uom                 = isset($config['uom'])                  ? $config['uom']                  : null;
+            $this->productTypeId       = isset($config['product_type_id'])      ? $config['product_type_id']      : null;
+            $this->productManufacturer = isset($config['product_manufacturer']) ? $config['product_manufacturer'] : null;
         }
     }
 
@@ -112,6 +114,17 @@ class CartProductMeta
     public function setProductTypeId($productTypeId)
     {
         $this->productTypeId = $productTypeId;
+        return $this;
+    }
+
+    public function getProductManufacturer()
+    {
+        return $this->productManufacturer;
+    }
+
+    public function setProductManufacturer($productManufacturer)
+    {
+        $this->productManufacturer = $productManufacturer;
         return $this;
     }
 }

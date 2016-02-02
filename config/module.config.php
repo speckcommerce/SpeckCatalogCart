@@ -1,15 +1,5 @@
 <?php
 return array(
-    'controllers' => array(
-        'invokables' => array(
-            'catalog_cart_controller' => 'SpeckCatalogCart\Controller\CartController'
-        ),
-    ),
-    'service_manager' => array(
-        'invokables' => array(
-            'catalog_cart_service' => 'SpeckCatalogCart\Service\CartService',
-        ),
-    ),
     'router' => array(
         'routes' => array(
             'product' => array(

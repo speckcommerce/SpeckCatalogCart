@@ -11,7 +11,7 @@ use SpeckCatalogCart\Model\CartProductMeta;
 use SpeckCatalog\Model\Option;
 use SpeckCatalog\Model\Product;
 use SpeckCatalog\Model\Choice;
-use SpeckCart\Service\CartEvent;
+
 
 class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInterface
 {
@@ -22,6 +22,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
     protected $productService;
     protected $cartService;
     protected $productUomService;
+    protected $cartItemPrototype = null;
 
     public function persistItem($cartItem)
     {
@@ -164,7 +165,7 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
 
     public function createCartItem($item, Option $parentOption = null, $uomString = null, $quantity = 1)
     {
-        $meta = array(
+        $meta = [
             'uom'                => $uomString,
             'item_number'        => $item->getItemNumber(),
             'image'              => $item->has('image') ? $item->getImage() : null,
@@ -172,24 +173,26 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
             'parent_option_name' => null,
             'product_id'         => $item->getProductId(),
             'flat_options'       => $this->flatOptions,
-        );
+        ];
 
-        if ($item instanceOf Product && $parentOption) {
+        if ($item instanceof Product && $parentOption) {
             $meta['parent_option_id']   = $parentOption->getOptionId();
             $meta['parent_option_name'] = $parentOption->__toString();
         }
 
         if ($item instanceof Product || $item instanceof Choice) {
             $meta['product_type_id'] = $item->getProductTypeId();
+            $meta['product_manufacturer'] = ($item->getManufacturer() !== null) ? $item->getManufacturer()->getName() : null;
         }
 
         $cartProductMeta = new CartProductMeta($meta);
-        $cartItem = new CartItem(array(
-            'metadata'    => $cartProductMeta,
-            'description' => $item->__toString(),
-            'quantity'    => $quantity,
-            'price'       => $parentOption ? $item->getAddPrice() : $this->getPriceForUom($uomString),
-        ));
+
+        $cartItem = $this->getCartItemPrototype();
+        $cartItem
+            ->setMetadata($cartProductMeta)
+            ->setDescription($item->__toString())
+            ->setQuantity($quantity)
+            ->setPrice($parentOption ? $item->getAddPrice() : $this->getPriceForUom($uomString));
 
         $this->addOptions($item->getOptions(), $cartItem, $quantity);
 
@@ -278,5 +281,20 @@ class CartService implements ServiceLocatorAwareInterface, EventManagerAwareInte
     {
         $this->flatOptions = $flatOptions;
         return $this;
+    }
+
+    public function setCartItemPrototype($cartItemPrototype)
+    {
+        $this->cartItemPrototype = $cartItemPrototype;
+        return $this;
+    }
+
+    public function getCartItemPrototype()
+    {
+        if(isset($this->cartItemPrototype)) {
+            return clone $this->cartItemPrototype;
+        } else {
+            return new CartItem;
+        }
     }
 }
