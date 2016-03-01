@@ -2,7 +2,19 @@
 
 namespace SpeckCatalogCart;
 
-class Module
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ControllerProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
+use Zend\Stdlib\ArrayUtils;
+
+class Module implements
+    ServiceProviderInterface,
+    ControllerProviderInterface,
+    ViewHelperProviderInterface,
+    ConfigProviderInterface,
+    AutoloaderProviderInterface
 {
     protected $serviceManager;
 
@@ -33,40 +45,18 @@ class Module
             __DIR__ . '/config/module.config.php',
         );
         foreach($configFiles as $configFile) {
-            $config = \Zend\Stdlib\ArrayUtils::merge($config, include $configFile);
+            $config = ArrayUtils::merge($config, include $configFile);
         }
         return $config;
     }
 
-    public function onBootstrap($e)
+    public function getControllerConfig()
     {
-        //if($e->getRequest() instanceof \Zend\Console\Request){
-        //    return;
-        //}
-
-        //$app = $e->getParam('application');
-
-        //$sm  = $app->getServiceManager();
-        //$this->setServiceManager($sm);
-
-        //$em  = $app->getEventManager()->getSharedManager();
+        return include __DIR__ . '/config/service/controller.config.php';
     }
 
-    /**
-     * @return serviceManager
-     */
-    public function getServiceManager()
+    public function getServiceConfig()
     {
-        return $this->serviceManager;
-    }
-
-    /**
-     * @param $serviceManager
-     * @return self
-     */
-    public function setServiceManager($serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-        return $this;
+        return include __DIR__ . '/config/service/service.config.php';
     }
 }
